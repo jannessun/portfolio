@@ -180,12 +180,12 @@
   }
   .philosophy__head h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.01em; }
 
-  .principles { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(2.5rem, 5vw, 4.5rem) 2rem; }
+  .principles { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 2rem; row-gap: clamp(0.5rem, 1.5vw, 1rem); }
   .principle { position: relative; }
-  .principle:nth-child(1) { grid-column: 1 / span 6; }
-  .principle:nth-child(2) { grid-column: 8 / span 5; margin-top: clamp(2rem, 7vw, 6rem); }
-  .principle:nth-child(3) { grid-column: 2 / span 6; margin-top: clamp(1rem, 3vw, 3rem); }
-  .principle:nth-child(4) { grid-column: 8 / span 5; margin-top: clamp(0.5rem, 3vw, 3rem); }
+  .principle:nth-child(1) { grid-column: 1 / span 6; grid-row: 1; }
+  .principle:nth-child(2) { grid-column: 8 / span 5; grid-row: 2; }
+  .principle:nth-child(3) { grid-column: 2 / span 6; grid-row: 3; }
+  .principle:nth-child(4) { grid-column: 8 / span 5; grid-row: 4; }
   .principle .num {
     display: block; font-family: var(--serif); font-style: italic; font-weight: 300;
     font-size: clamp(1.5rem, 2.4vw, 2.1rem); color: var(--accent-mute); margin-bottom: 0.9rem;
@@ -433,7 +433,7 @@
      ============================================================ */
   @media (max-width: 960px) {
     .principles { grid-template-columns: 1fr; gap: clamp(2.5rem, 8vw, 4rem); }
-    .principle, .principle:nth-child(n) { grid-column: auto; margin-top: 0; }
+    .principle, .principle:nth-child(n) { grid-column: auto; grid-row: auto; margin-top: 0; }
     .principle p { font-size: clamp(1.9rem, 7vw, 2.6rem); }
 
     .project--split, .project--01, .project--02 { grid-template-columns: 1fr; gap: 2.25rem; }
