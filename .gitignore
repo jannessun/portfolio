@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Claude Code tooling
+.claude/
+
+# Raw PDF-extraction intermediates (not used by the site)
+images/p*_x*.png
+
+# Stray screenshots (not part of the site)
+images/Screenshot*.png

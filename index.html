@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jane Sun, Brand &amp; Creative Strategy</title>
+<meta name="description" content="Jane Sun is a brand and creative strategist working across New York, Seoul, and Europe, building the clarity, systems, and standards that let brands stay coherent as they grow." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root {
+    --paper:      #EDE8E0;
+    --paper-deep: #E4DDD3;
+    --philo:      #E8E1D7;
+    --ink:        #201E1C;
+    --ink-soft:   #5D564F;
+    --ink-faint:  #8A8177;
+    --line:       rgba(32, 30, 28, 0.14);
+    --line-soft:  rgba(32, 30, 28, 0.08);
+    --accent:     #9C574F;
+    --accent-mute:#B98A81;
+
+    --rose-wash:  linear-gradient(135deg, rgba(185,110,121,0.09) 0%, rgba(212,165,116,0.13) 100%);
+    --rose-line:  linear-gradient(90deg, rgba(185,110,121,0.85) 0%, rgba(212,165,116,0.85) 100%);
+    --rose-grad:  linear-gradient(120deg, #B96E79 0%, #D4A574 100%);
+    --rose-gold:  #D8A48F;
+    --dark:       #1E1A17;
+    --radius:     10px;   /* media/surfaces; pills stay full, hairlines stay sharp */
+
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --measure: 1240px;
+    --gutter: clamp(1.5rem, 5vw, 6.5rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ============================================================
+     RESET
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* Paper grain — fixed, non-interactive */
+  .grain {
+    position: fixed; inset: 0; z-index: 100;
+    pointer-events: none; opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============================================================
+     PRIMITIVES
+     ============================================================ */
+  .wrap { width: 100%; max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
+  section { position: relative; }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .srule { height: 2px; width: 100%; background: var(--rose-line); }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem var(--gutter);
+    transition: background .6s var(--ease), padding .6s var(--ease), border-color .6s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.is-stuck {
+    background: rgba(237, 232, 224, 0.82);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    padding-top: .95rem; padding-bottom: .95rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav__brand { font-family: var(--serif); font-size: 1.55rem; font-weight: 500; letter-spacing: 0.03em; }
+  .nav__brand .dot { color: var(--accent); }
+  .nav__links { display: flex; gap: clamp(1.25rem, 3vw, 2.75rem); align-items: center; }
+  .nav__links a {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-soft); position: relative; padding-bottom: 2px;
+    transition: color .4s var(--ease);
+  }
+  .nav__links a::after {
+    content: ""; position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease);
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a:hover::after { transform: scaleX(1); }
+
+  /* ============================================================
+     HERO — asymmetric editorial manifesto (anti-center)
+     ============================================================ */
+  .hero {
+    min-height: 100dvh; display: flex; flex-direction: column; justify-content: center;
+    padding-top: 9rem; padding-bottom: 5rem;
+    background: var(--rose-wash);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(55% 45% at 28% 42%, rgba(212, 165, 116, 0.12) 0%, transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero__kicker { display: flex; align-items: center; gap: 1.1rem; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .hero__kicker .line { width: clamp(2rem, 8vw, 5.5rem); height: 1px; background: var(--accent-mute); }
+  .hero__display {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(3rem, 8.5vw, 7.75rem);
+    line-height: 0.98; letter-spacing: -0.022em;
+    max-width: 14ch;
+  }
+  .hero__display em { font-style: italic; color: var(--accent); }
+  /* asymmetric offset: sub indented away from the display's flush-left edge */
+  .hero__sub {
+    margin-top: clamp(1.75rem, 4vw, 2.75rem);
+    margin-left: clamp(0px, 7vw, 8rem);
+    font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 300;
+    color: var(--ink-soft); max-width: 44ch; line-height: 1.65;
+  }
+  .hero__foot {
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+    margin-left: clamp(0px, 7vw, 8rem);
+    display: flex; flex-wrap: wrap; align-items: center; gap: clamp(1.5rem, 5vw, 3rem);
+  }
+  .hero__meta { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); }
+
+  .cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500;
+    color: var(--ink); padding-bottom: 4px; border-bottom: 1px solid var(--ink);
+    transition: gap .5s var(--ease), color .5s var(--ease), border-color .5s var(--ease), transform .3s var(--ease);
+  }
+  .cta .arrow { transition: transform .5s var(--ease); display: inline-block; }
+  .cta:hover { color: var(--accent); border-color: var(--accent); gap: 1.1rem; }
+  .cta:hover .arrow { transform: translate(3px, -3px); }
+  .cta:active { transform: translateY(1px); }
+
+  /* ============================================================
+     PHILOSOPHY — staggered asymmetric grid
+     ============================================================ */
+  .philosophy { padding-block: clamp(7rem, 15vw, 13rem); background: var(--philo); position: relative; }
+  /* Section-transition softeners: overlays live inside the top/bottom padding, no layout shift.
+     Fades run paper -> --philo (philosophy's real bg) so the blend is seamless both edges. */
+  .philosophy::before, .philosophy::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 80px; pointer-events: none;
+  }
+  .philosophy::before { top: 0;    background: linear-gradient(to bottom, var(--paper), var(--philo)); }
+  .philosophy::after  { bottom: 0; background: linear-gradient(to top,    var(--paper), var(--philo)); }
+  .philosophy__head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: clamp(3.5rem, 8vw, 6rem);
+  }
+  .philosophy__head h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.01em; }
+
+  .principles { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(2.5rem, 5vw, 4.5rem) 2rem; }
+  .principle { position: relative; }
+  .principle:nth-child(1) { grid-column: 1 / span 6; }
+  .principle:nth-child(2) { grid-column: 8 / span 5; margin-top: clamp(2rem, 7vw, 6rem); }
+  .principle:nth-child(3) { grid-column: 2 / span 6; margin-top: clamp(1rem, 3vw, 3rem); }
+  .principle:nth-child(4) { grid-column: 8 / span 5; margin-top: clamp(0.5rem, 3vw, 3rem); }
+  .principle .num {
+    display: block; font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem); color: var(--accent-mute); margin-bottom: 0.9rem;
+  }
+  .principle p { font-family: var(--serif); font-size: clamp(1.9rem, 3.6vw, 3.1rem); line-height: 1.08; font-weight: 400; letter-spacing: -0.01em; }
+  .principle p span { color: var(--accent); font-style: italic; }
+
+  /* ============================================================
+     WORK
+     ============================================================ */
+  .work { padding-block: clamp(6rem, 13vw, 11rem); }
+  .work__intro {
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: clamp(3.5rem, 8vw, 6rem);
+  }
+  .work__intro h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 5vw, 3.8rem); letter-spacing: -0.015em; }
+  .work__intro .count { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); }
+
+  .project { border-top: 1px solid var(--line); padding-block: clamp(5rem, 11vw, 9rem); }
+
+  .project__num {
+    display: block; font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1; color: var(--accent-mute);
+    margin-bottom: 0.6rem;
+  }
+  .project__title {
+    font-family: var(--serif); font-weight: 300; font-style: italic;
+    line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    font-size: clamp(3rem, 5.4vw, 5.25rem);
+    color: var(--ink); -webkit-text-fill-color: var(--ink);
+  }
+  .project__meta {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint);
+  }
+  .project__meta span:not(:last-child)::after { content: "·"; margin-left: 1rem; color: var(--accent-mute); }
+
+  /* Split projects (01, 02) — varied ratios + offset */
+  .project--split { display: grid; gap: clamp(2rem, 5vw, 5.5rem); align-items: start; }
+  .project--01 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .project--02 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .project__media { order: 1; position: sticky; top: 6rem; overflow: hidden; border-radius: var(--radius); }
+  .project__content { order: 2; }
+  .project--rev .project__media { order: 2; margin-top: clamp(2rem, 8vw, 7rem); }
+  .project--rev .project__content { order: 1; }
+  .project__media img {
+    width: 100%; object-fit: cover; display: block;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 10px rgba(32, 30, 28, 0.06), 0 26px 60px -14px rgba(32, 30, 28, 0.20);
+  }
+  .project--01 .project__media img { height: clamp(460px, 66vh, 720px); }
+  .project--02 .project__media img { height: clamp(460px, 68vh, 760px); }
+  .project--03 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }   /* same split as 01 */
+  .project--03 .project__media img { height: clamp(460px, 66vh, 720px); }
+  .project__media figcaption {
+    margin-top: 0.9rem; font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  /* Full-width project (03) */
+  .project--full .project__cover { position: relative; width: 100%; overflow: hidden; border-radius: var(--radius); box-shadow: 0 2px 10px rgba(32, 30, 28, 0.06), 0 26px 60px -14px rgba(32, 30, 28, 0.20); }
+  .project--full .project__cover img { width: 100%; height: clamp(400px, 60vh, 680px); object-fit: cover; display: block; }
+  .project__panel {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: rgba(16, 14, 12, 0.52);
+    backdrop-filter: blur(7px) saturate(115%); -webkit-backdrop-filter: blur(7px) saturate(115%);
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3.5rem);
+    border-top: 1px solid rgba(216, 164, 143, 0.4);
+  }
+  .project__panel .project__num { color: var(--rose-gold); font-size: clamp(2rem, 4vw, 3.25rem); }
+  .project__panel .project__title { color: #F6F1EC; -webkit-text-fill-color: #F6F1EC; margin-bottom: 1rem; font-size: clamp(2.6rem, 6vw, 5.5rem); }
+  .project__panel .project__meta { color: rgba(246, 241, 236, 0.7); }
+  .project__panel .project__meta span:not(:last-child)::after { color: var(--rose-gold); }
+  .project__body-full { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+
+  /* Content blocks (shared) */
+  .block { margin-bottom: clamp(2rem, 4vw, 2.75rem); }
+  .block:last-child { margin-bottom: 0; }
+  .block__label { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+  .block__lead { font-family: var(--serif); font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.35; font-weight: 400; color: var(--ink); }
+  .block ul { list-style: none; }
+  .block li {
+    position: relative; padding-left: 1.5rem; margin-bottom: 0.85rem;
+    font-size: 0.98rem; font-weight: 300; color: var(--ink-soft); line-height: 1.55;
+  }
+  .block li:last-child { margin-bottom: 0; }
+  .block li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 1px; background: var(--accent); }
+  .block li strong { font-weight: 500; color: var(--ink); }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .tag {
+    font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 0.95rem;
+  }
+  .project__note {
+    margin-top: clamp(2rem, 4vw, 2.75rem); font-size: 0.82rem; font-style: italic;
+    font-family: var(--serif); color: var(--ink-faint); border-left: 1px solid var(--accent-mute); padding-left: 1rem;
+  }
+
+  /* ============================================================
+     ABOUT — full-bleed dark, asymmetric
+     ============================================================ */
+  .about { padding-block: clamp(7rem, 15vw, 13rem); background: var(--dark); position: relative; overflow: hidden; }
+  .about::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(45% 40% at 75% 5%, rgba(216, 164, 143, 0.10) 0%, transparent 70%);
+  }
+  .about > .wrap { position: relative; z-index: 1; }
+  /* Soften the jarring light-to-dark work -> about edge (top only), behind content and glow. */
+  .about::after {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 120px; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, var(--paper), var(--dark));
+  }
+  .about__grid { display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); gap: clamp(2.5rem, 6vw, 5.5rem); align-items: start; }
+  .about__body p {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(1.6rem, 2.8vw, 2.35rem); line-height: 1.33; letter-spacing: -0.005em; color: #ECE7E1;
+  }
+  .about__body p + p { margin-top: 1.9rem; }
+  .about__body em { font-style: italic; color: var(--rose-gold); }
+  .operate { margin-top: clamp(2.5rem, 5vw, 3.5rem); display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .about .operate .tag { border-color: rgba(255, 255, 255, 0.18); color: #CFC9C2; }
+  .about .eyebrow { color: #9A928A; -webkit-text-fill-color: #9A928A; background-image: none; }
+  .about__aside p { font-size: 0.94rem; font-weight: 300; color: #B7B0A8; line-height: 1.7; margin-top: 1.5rem; }
+  .places { margin-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+  .places div {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.9rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 0.74rem; letter-spacing: 0.15em; text-transform: uppercase; color: #D3CDC6;
+  }
+  .places div span:last-child { color: #837C74; font-size: 0.68rem; }
+  .about .srule { opacity: 0.9; }
+
+  /* ============================================================
+     CONTACT
+     ============================================================ */
+  .contact { padding-block: clamp(8rem, 17vw, 14rem); position: relative; }
+  /* Soften the dark about -> paper contact edge (top fade on contact; about's own pseudos are taken). */
+  .contact::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 120px; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, var(--dark), var(--paper));
+  }
+  .contact__inner { position: relative; z-index: 1; }
+  .contact .eyebrow { display: block; margin-bottom: clamp(1.25rem, 3vw, 2rem); }
+  .contact h2 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(2.6rem, 7vw, 6rem); line-height: 1.0; letter-spacing: -0.025em; max-width: 15ch;
+  }
+  .contact h2 a { color: var(--accent); font-style: italic; position: relative; white-space: nowrap; }
+  .contact h2 a::after {
+    content: ""; position: absolute; left: 0; bottom: 0.08em; width: 100%; height: 1px;
+    background: var(--accent-mute); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease);
+  }
+  .contact h2 a:hover::after { transform: scaleX(1); }
+  .contact__links {
+    margin-top: clamp(3rem, 7vw, 5rem); display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--line); padding-top: clamp(2rem, 4vw, 3rem);
+  }
+  .contact__link .k { font-size: 0.64rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 0.6rem; }
+  .contact__link a { font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); color: var(--ink); transition: color .4s var(--ease); }
+  .contact__link a:hover { color: var(--accent); }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .footer { padding-block: clamp(3rem, 6vw, 4rem); border-top: 1px solid var(--line); background: var(--paper-deep); }
+  .footer__inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
+  .footer__mark { font-family: var(--serif); font-size: 1.2rem; }
+  .footer__mark .dot { color: var(--accent); }
+  .footer small { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); }
+  .footer__top { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); transition: color .4s var(--ease); }
+  .footer__top:hover { color: var(--accent); }
+
+  /* ============================================================
+     ROSE-GOLD GRADIENT TEXT — always-on, on every accent-colored text
+     (same clip-text technique as .project__title, but not gated on hover)
+     ============================================================ */
+  .eyebrow,
+  .nav__brand .dot,
+  .hero__display em,
+  .principle .num,
+  .principle p span,
+  .project__num,
+  .project__meta span:not(:last-child)::after,
+  .block__label,
+  .contact h2 a,
+  .footer__mark .dot {
+    background-image: var(--rose-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* ============================================================
+     TITLE HOVER — rose-gold gradient reveal (desktop)
+     ============================================================ */
+  @media (hover: hover) {
+    .project__title {
+      background-image: var(--rose-grad);
+      -webkit-background-clip: text; background-clip: text;
+      transition: color .6s var(--ease), -webkit-text-fill-color .6s var(--ease);
+    }
+    .project--split:hover .project__title,
+    .project--full:hover .project__title { color: transparent; -webkit-text-fill-color: transparent; }
+    .project__media img { transition: transform 1.5s var(--ease); }
+    .project__media:hover img { transform: scale(1.045); }
+  }
+
+  /* ============================================================
+     MOTION — fluid entry (MOTION_INTENSITY 4), staggered
+     ============================================================ */
+  .js .reveal {
+    opacity: 0; transform: translateY(30px); filter: blur(5px);
+    transition: opacity .95s var(--ease), transform .95s var(--ease), filter .95s var(--ease);
+    will-change: opacity, transform;
+  }
+  .js .reveal.is-visible { opacity: 1; transform: none; filter: none; }
+
+  /* opacity + settle-scale reveal for images (safe on sticky, no layout props) */
+  .js .reveal-fade { opacity: 0; transition: opacity 1.1s var(--ease); }
+  .js .reveal-fade.is-visible { opacity: 1; }
+  .js .reveal-fade img { transform: scale(1.08); transition: transform 1.5s var(--ease); }
+  .js .reveal-fade.is-visible img { transform: scale(1); }
+
+  /* Hero load cascade */
+  .js .hero__kicker  { transition-delay: 0.05s; }
+  .js .hero__display { transition-delay: 0.16s; }
+  .js .hero__sub     { transition-delay: 0.30s; }
+  .js .hero__foot    { transition-delay: 0.44s; }
+  /* Principle stagger */
+  .js .principle:nth-child(1) { transition-delay: 0.00s; }
+  .js .principle:nth-child(2) { transition-delay: 0.10s; }
+  .js .principle:nth-child(3) { transition-delay: 0.18s; }
+  .js .principle:nth-child(4) { transition-delay: 0.26s; }
+  /* List item stagger within a revealed block */
+  .js .block li { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .js .block.is-visible li { opacity: 1; transform: none; }
+  .js .block.is-visible li:nth-child(1) { transition-delay: 0.04s; }
+  .js .block.is-visible li:nth-child(2) { transition-delay: 0.12s; }
+  .js .block.is-visible li:nth-child(3) { transition-delay: 0.20s; }
+  .js .block.is-visible li:nth-child(4) { transition-delay: 0.28s; }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 960px) {
+    .principles { grid-template-columns: 1fr; gap: clamp(2.5rem, 8vw, 4rem); }
+    .principle, .principle:nth-child(n) { grid-column: auto; margin-top: 0; }
+    .principle p { font-size: clamp(1.9rem, 7vw, 2.6rem); }
+
+    .project--split, .project--01, .project--02 { grid-template-columns: 1fr; gap: 2.25rem; }
+    .project__media, .project--rev .project__media { order: 1; position: static; margin-top: 0; }
+    .project__content, .project--rev .project__content { order: 2; }
+    .project--01 .project__media img, .project--02 .project__media img { height: clamp(340px, 66vw, 520px); }
+    .project--03 .project__media img { height: clamp(340px, 66vw, 520px); }
+    .project__body-full { grid-template-columns: 1fr; gap: 0; }
+
+    .about__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 620px) {
+    .nav { padding-inline: var(--gutter); }
+    .nav__brand { font-size: 1.3rem; }
+    .nav__links { gap: 1.1rem; }
+    .nav__links a { font-size: 0.62rem; letter-spacing: 0.12em; }
+    .hero__sub, .hero__foot { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+    .reveal, .reveal-fade, .reveal-fade img, .block li {
+      opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important;
+    }
+    .cta, .cta .arrow, .nav__links a::after, .project__media img { transition: none; }
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.className += " js";</script>
+<div class="grain" aria-hidden="true"></div>
+<span id="nav-sentinel" aria-hidden="true" style="position:absolute;top:60px;left:0;width:1px;height:1px;"></span>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav" aria-label="Primary">
+  <a href="#top" class="nav__brand">Jane Sun<span class="dot">.</span></a>
+  <div class="nav__links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero wrap" id="top">
+  <div class="hero__kicker reveal">
+    <span class="line" aria-hidden="true"></span>
+    <span class="eyebrow">Jane Sun, Brand &amp; Creative Strategy</span>
+  </div>
+
+  <h1 class="hero__display reveal">
+    I build brands through <em>clarity</em>, structure, and execution.
+  </h1>
+
+  <p class="hero__sub reveal">
+    Balancing creative direction with the realities of business, building the
+    foundations, systems, and standards that let brands stay coherent as they grow.
+  </p>
+
+  <div class="hero__foot reveal">
+    <a href="#contact" class="cta">
+      Get in touch <span class="arrow" aria-hidden="true">↗</span>
+    </a>
+    <span class="hero__meta">New York · Seoul · Europe</span>
+  </div>
+</header>
+
+<!-- ======================= PHILOSOPHY ========================= -->
+<section class="philosophy" id="approach">
+  <div class="wrap">
+    <div class="srule reveal" aria-hidden="true" style="margin-bottom: clamp(2rem,4vw,3rem)"></div>
+    <div class="philosophy__head reveal">
+      <h2>How I think about brand</h2>
+      <span class="eyebrow">Principles</span>
+    </div>
+
+    <div class="principles">
+      <div class="principle reveal">
+        <span class="num">01</span>
+        <p>Clarity before <span>creativity.</span></p>
+      </div>
+      <div class="principle reveal">
+        <span class="num">02</span>
+        <p>Systems before <span>aesthetics.</span></p>
+      </div>
+      <div class="principle reveal">
+        <span class="num">03</span>
+        <p>Consistency over <span>trends.</span></p>
+      </div>
+      <div class="principle reveal">
+        <span class="num">04</span>
+        <p>Execution that <span>scales.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== WORK ============================ -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="srule reveal" aria-hidden="true" style="margin-bottom: clamp(2rem,4vw,3rem)"></div>
+    <div class="work__intro reveal">
+      <h2>Selected work</h2>
+      <span class="count">Three case studies</span>
+    </div>
+
+    <!-- 01 — Seoul Ink · image left -->
+    <article class="project project--split project--01">
+      <figure class="project__media reveal-fade">
+        <img src="images/seoul-ink.jpg" alt="Korean folklore ornamentation from the Seoul Ink brand environment" width="980" height="480" loading="lazy" />
+        <figcaption>Korean folklore reference, brand environment</figcaption>
+      </figure>
+      <div class="project__content">
+        <div class="reveal">
+          <span class="project__num" aria-hidden="true">01</span>
+          <h3 class="project__title">Brand Foundations &amp; Consistency Framework</h3>
+          <div class="project__meta">
+            <span>Seoul Ink</span><span>Brand Communications</span><span>Seoul, Korea</span>
+          </div>
+        </div>
+
+        <div class="block reveal" style="margin-top: clamp(2rem,4vw,2.75rem)">
+          <span class="block__label">Context</span>
+          <p class="block__lead">
+            Seoul Ink is a creative studio operating across Korean and international
+            markets. At the time, the brand lacked cohesive visual and messaging
+            standards across channels.
+          </p>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Approach</span>
+          <ul>
+            <li>Defined a clear brand voice adaptable across cultures.</li>
+            <li>Prioritized consistency over trend-driven visuals.</li>
+            <li>Established scalable guidelines rather than fixed executions.</li>
+            <li>Ensured brand elements could be applied across digital and physical touchpoints.</li>
+          </ul>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Outcome</span>
+          <ul>
+            <li>Led brand communication strategy and advised on typography and direction.</li>
+            <li>Developed a foundational brand book with consistency principles across visual and messaging systems.</li>
+            <li>A framework built to scale across cultures and touchpoints, not a fixed set of assets.</li>
+          </ul>
+        </div>
+
+        <p class="project__note reveal">
+          Reconstructed case study based on original brand direction work.
+        </p>
+      </div>
+    </article>
+
+    <!-- 02 — Chocolate · image right, offset -->
+    <article class="project project--split project--02 project--rev">
+      <figure class="project__media reveal-fade">
+        <img src="images/chocolate.jpg" alt="Warm editorial still life, cappuccino, gold ribbon and an open book" width="982" height="1472" loading="lazy" />
+        <figcaption>Warmth &amp; craft, concept still life</figcaption>
+      </figure>
+      <div class="project__content">
+        <div class="reveal">
+          <span class="project__num" aria-hidden="true">02</span>
+          <h3 class="project__title">European Chocolate, A Study in Quiet Craft</h3>
+          <div class="project__meta">
+            <span>Concept Study</span><span>Brand Direction</span><span>Italy</span>
+          </div>
+        </div>
+
+        <div class="block reveal" style="margin-top: clamp(2rem,4vw,2.75rem)">
+          <span class="block__label">Context</span>
+          <p class="block__lead">
+            A concept exploring European chocolate through the lens of quiet
+            craftsmanship and nostalgia, prioritizing warmth, restraint, and emotional
+            comfort while remaining commercially grounded. Designed to feel familiar,
+            human, and enduring rather than performative.
+          </p>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Direction</span>
+          <ul>
+            <li><strong>Feeling:</strong> quiet, nostalgic, warm, craft-led, enduring, consumer-aware. Designed to comfort, not impress.</li>
+            <li><strong>Typography:</strong> restrained editorial type selected for warmth, clarity, and longevity; legibility and quiet confidence over display.</li>
+            <li><strong>Colour:</strong> warm neutrals with subtle contrast, to evoke comfort, familiarity, and timelessness.</li>
+          </ul>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Outcome</span>
+          <ul>
+            <li>A coherent brand direction (feeling, type, and colour) grounded enough to carry into commercial product.</li>
+          </ul>
+        </div>
+
+        <p class="project__note reveal">
+          Conceptual exploration informed by chocolate studies in Italy.
+        </p>
+      </div>
+    </article>
+
+    <!-- 03 — Octonano · image left, content right (matches 01) -->
+    <article class="project project--split project--03">
+      <figure class="project__media reveal-fade">
+        <img src="images/octonano.jpg" alt="Octonano scope-of-work presentation slide" width="1222" height="832" loading="lazy" />
+      </figure>
+      <div class="project__content">
+        <div class="reveal">
+          <span class="project__num" aria-hidden="true">03</span>
+          <h3 class="project__title">Creative Strategy &amp; Operations</h3>
+          <div class="project__meta">
+            <span>Octonano</span><span>Brand &amp; Creative Strategy</span><span>New York</span>
+          </div>
+        </div>
+
+        <div class="block reveal" style="margin-top: clamp(2rem,4vw,2.75rem)">
+          <span class="block__label">Context</span>
+          <p class="block__lead">
+            Octonano is a boutique branding and creative strategy agency working with
+            design-led, global clients across architecture, interiors, lifestyle, and
+            finance. Within a small, high-output team, I supported creative strategy,
+            managed execution across multiple accounts, and introduced systems to improve
+            clarity, workflow, and delivery.
+          </p>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Scope of work</span>
+          <div class="tags">
+            <span class="tag">Brand Repositioning</span>
+            <span class="tag">Website Refresh</span>
+            <span class="tag">Amplification Strategy</span>
+          </div>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Approach</span>
+          <ul>
+            <li>Managed day-to-day execution across multiple client accounts.</li>
+            <li>Owned internal workflows, timelines, and delivery coordination.</li>
+            <li>Supported creative strategy development from pitch through execution.</li>
+            <li>Introduced workflow and digital tools, and acted as a bridge between leadership, creatives, and execution.</li>
+          </ul>
+        </div>
+
+        <div class="block reveal">
+          <span class="block__label">Outcome</span>
+          <ul>
+            <li>Improved internal clarity, reducing execution bottlenecks.</li>
+            <li>Enabled faster, more informed leadership decision-making through built reporting tools.</li>
+            <li>Supported consistent delivery across concurrent projects.</li>
+            <li>Maintained quality in a high-output, small-team environment.</li>
+          </ul>
+        </div>
+
+        <p class="project__note reveal">
+          Selected agency clients included global brands across automotive, finance, and fashion.
+        </p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========================= ABOUT (dark) ===================== -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="srule reveal" aria-hidden="true" style="margin-bottom: clamp(2rem,4vw,3rem)"></div>
+    <div class="about__grid">
+      <div class="about__aside reveal">
+        <span class="eyebrow">About</span>
+        <p>
+          A brand and creative strategist working where creative direction meets the
+          realities of business.
+        </p>
+        <div class="places">
+          <div><span>New York</span><span>Creative Strategy</span></div>
+          <div><span>Seoul</span><span>Brand Communications</span></div>
+          <div><span>Italy · Europe</span><span>Concept &amp; Craft</span></div>
+        </div>
+      </div>
+
+      <div class="about__body reveal">
+        <p>
+          I build brands through <em>clarity, structure, and execution</em>,
+          shaping the foundations, systems, and standards that keep a brand coherent as it
+          scales across markets and cultures.
+        </p>
+        <p>
+          My work spans a global background (creative strategy and operations in New York,
+          brand communications in Seoul, and concept and craft studies in Italy) with a
+          consistent instinct: consistency over trends, systems before aesthetics, execution
+          that lasts.
+        </p>
+        <div class="operate">
+          <span class="tag">Calm under ambiguity</span>
+          <span class="tag">Structured, but flexible</span>
+          <span class="tag">Execution-focused, detail-driven</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CONTACT =========================== -->
+<section class="contact" id="contact">
+  <div class="wrap contact__inner">
+    <div class="srule reveal" aria-hidden="true" style="margin-bottom: clamp(2rem,4vw,3rem)"></div>
+    <span class="eyebrow reveal">Contact</span>
+    <h2 class="reveal">
+      Let's build something that <a href="mailto:jannejsun@gmail.com">endures.</a>
+    </h2>
+
+    <div class="contact__links reveal">
+      <div class="contact__link">
+        <span class="k">Email</span>
+        <a href="mailto:jannejsun@gmail.com">jannejsun@gmail.com</a>
+      </div>
+      <div class="contact__link">
+        <span class="k">LinkedIn</span>
+        <a href="https://linkedin.com/in/jannesun" target="_blank" rel="noopener">linkedin.com/in/jannesun</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FOOTER =========================== -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <span class="footer__mark">Jane Sun<span class="dot">.</span></span>
+    <a href="#top" class="footer__top">Back to top ↑</a>
+    <small>Portfolio, 2026</small>
+  </div>
+</footer>
+
+<script>
+  // Nav background: IntersectionObserver sentinel (no scroll-listener animation)
+  (function () {
+    var nav = document.getElementById('nav');
+    var sentinel = document.getElementById('nav-sentinel');
+    if (!('IntersectionObserver' in window) || !sentinel) return;
+    var io = new IntersectionObserver(function (entries) {
+      nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    io.observe(sentinel);
+  })();
+
+  // Reveal on enter — IntersectionObserver only
+  (function () {
+    var els = document.querySelectorAll('.reveal, .reveal-fade, .block');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
