@@ -240,6 +240,9 @@
   .project--02 .project__media img { height: clamp(460px, 68vh, 760px); }
   .project--03 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }   /* same split as 01 */
   .project--03 .project__media img { height: clamp(460px, 66vh, 720px); }
+  /* 02 Old School Donuts — landscape presentation mockup, shown uncropped at its
+     native ratio (overrides the cover-crop height for this slot only, at all widths). */
+  .project--mock.project--02 .project__media img { height: auto; object-fit: contain; }
   .project__media figcaption {
     margin-top: 0.9rem; font-size: 0.62rem; letter-spacing: 0.15em;
     text-transform: uppercase; color: var(--ink-faint);
@@ -605,10 +608,10 @@
     <!-- NOTE: This slot previously held the European Chocolate study. Chocolate was
          not deleted; its markup is preserved in case-studies/chocolate.html and its
          image remains at images/chocolate.jpg. To restore it, see that file. -->
-    <article class="project project--split project--02 project--rev">
+    <article class="project project--split project--02 project--rev project--mock">
       <figure class="project__media reveal-fade">
-        <img src="images/donuts/menu-after.jpg" alt="Old School Donuts in-store rebrand, new menu board and interior signage from Phase 1" width="1066" height="1600" loading="lazy" />
-        <figcaption>Phase 1, the quiet upgrade: new menus and interior signage.</figcaption>
+        <img src="images/donuts/menu-after.jpg" alt="Old School Donuts in-store menu boards on a hanging sign: a Dozen Donuts pricing board, a What's Fancy flavor grid, and a Get Your Donut Filled board" width="2000" height="1353" loading="lazy" />
+        <figcaption>In-store menu boards, installed. Shown as a presentation mockup: 3 of 8 posters designed.</figcaption>
       </figure>
       <div class="project__content">
         <div class="reveal">
